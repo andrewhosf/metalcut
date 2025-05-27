@@ -33,6 +33,7 @@
 - [ ] Design quote presentation interface
 - [ ] Implement order placement system
 - [ ] Create user account management
+- [ ] Implement 3D dimension visualization in the model viewer
 
 ### User Experience
 - [ ] Add file upload validation feedback
