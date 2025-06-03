@@ -1,3 +1,16 @@
+/**
+ * QuoteHistory.js
+ * 
+ * This component displays a history of quotes and allows users to reorder items.
+ * Features:
+ * - Displays quote history in a table format
+ * - Shows quote status with color-coded chips
+ * - Provides reorder functionality for each quote
+ * - Integrates with CartContext for reordering
+ * 
+ * Note: Currently using mock data. In production, this should fetch from an API.
+ */
+
 import React from 'react';
 import {
   Box,
@@ -10,7 +23,11 @@ import {
   TableHead,
   TableRow,
   Chip,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
+import ReplayIcon from '@mui/icons-material/Replay';
+import { useCart } from '../contexts/CartContext';
 
 // Mock data for demonstration
 const mockQuotes = [
@@ -44,6 +61,13 @@ const mockQuotes = [
 ];
 
 function QuoteHistory() {
+  const { reorderFromQuote } = useCart();
+
+  /**
+   * Returns the appropriate color for the status chip
+   * @param {string} status - The quote status
+   * @returns {string} The color to use for the status chip
+   */
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case 'completed':
@@ -55,6 +79,14 @@ function QuoteHistory() {
       default:
         return 'default';
     }
+  };
+
+  /**
+   * Handles reordering a quote by adding it to the cart
+   * @param {Object} quote - The quote to reorder
+   */
+  const handleReorder = (quote) => {
+    reorderFromQuote(quote);
   };
 
   return (
@@ -74,6 +106,7 @@ function QuoteHistory() {
                 <TableCell>Quantity</TableCell>
                 <TableCell align="right">Total Cost</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -92,6 +125,17 @@ function QuoteHistory() {
                       color={getStatusColor(quote.status)}
                       size="small"
                     />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Tooltip title="Reorder">
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleReorder(quote)}
+                        size="small"
+                      >
+                        <ReplayIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
